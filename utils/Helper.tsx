@@ -1,3 +1,5 @@
+import { cookies } from "next/headers";
+
 export function getLocalStorage(key: string, defaultValue: boolean) {
   const stickyValue = localStorage.getItem(key);
 

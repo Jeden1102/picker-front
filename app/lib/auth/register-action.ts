@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+import { sendEmailConfirmation } from "./email-confirmation";
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
@@ -44,22 +45,10 @@ export async function registerAction(prevState: any, formData: any) {
     if (!response.ok && data.error)
       return { ...prevState, message: data.error.message, errors: null };
     if (response.ok && data.jwt) cookies().set("jwt", data.jwt);
-
-    const url2 = `${STRAPI_URL}/api/users/me`;
-    console.log(url2);
-    const response2: any = await fetch(url2, {
-      method: "GET",
-      cache: "no-cache",
-      headers: {
-        Authorization: `Bearer ${data.jwt}`,
-      },
-    });
-
-    const data2 = await response2.json();
-    console.log("USER HEER", data2);
+    sendEmailConfirmation(email);
   } catch (error) {
     console.log(error);
     return { error: "Server error please try again later." };
   }
-  // redirect("/");
+  redirect("/email-confirmation");
 }

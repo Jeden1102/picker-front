@@ -7,9 +7,7 @@ import { Navbar } from "@/components/navbar";
 import Footer from "@/components/footer";
 import clsx from "clsx";
 import CookieBanner from "@/components/cookie-banner";
-import { cookies } from "next/headers";
 
-console.log(cookies().get("jwt"), "TUTAJ");
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
@@ -33,7 +31,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const x = cookies().get("jwt");
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
@@ -45,10 +42,8 @@ export default function RootLayout({
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
           <div className="relative flex flex-col h-screen pt-20 md:pt-0">
-            <p>tutaj - </p>
             <Navbar />
             <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
-              tutaj - {x?.value}
               {children}
               <CookieBanner />
             </main>

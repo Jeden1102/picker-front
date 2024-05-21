@@ -46,5 +46,5 @@ export async function loginAction(prevState: any, formData: any) {
     console.log(error);
     return { error: "Server error please try again later." };
   }
-  redirect("/dashboard");
+  redirect("/user");
 }
