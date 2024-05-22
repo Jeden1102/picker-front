@@ -2,102 +2,108 @@
 import { useFormState } from "react-dom";
 import { registerAction } from "@/app/lib/auth/register-action";
 import Link from "next/link";
-
+import { Input } from "@nextui-org/input";
+import { IoEyeOffOutline, IoEyeOutline, IoMailOutline } from "react-icons/io5";
+import { useState } from "react";
+import { Button } from "@nextui-org/button";
+import { LuUserCircle } from "react-icons/lu";
 export default function RegisterForm() {
   const initialState = {};
   const [state, dispatch] = useFormState(registerAction, initialState);
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toggleVisibility = () => setIsVisible(!isVisible);
   return (
     <form className="space-y-3" action={dispatch}>
-      <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
-        <h1 className={`mb-3 text-2xl`}>Please register to continue.</h1>
-        <div className="w-full">
-          <div>
-            <label
-              className="mb-3 mt-5 block text-xs font-medium text-gray-900"
-              htmlFor="username"
-            >
-              Username
-            </label>
-            <div className="relative">
-              <input
-                className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
-                id="username"
-                type="text"
-                name="username"
-                placeholder="Enter your email or username"
-              />
-            </div>
-            {state?.errors?.username ? (
-              <div
-                id="customer-error"
-                aria-live="polite"
-                className="mt-2 text-sm text-red-500"
-              >
-                {state.errors.username.map((error: string) => (
-                  <p key={error}>{error}</p>
-                ))}
-              </div>
-            ) : null}
+      <div className="flex-1  px-6 pb-4 pt-8 flex flex-col gap-2">
+        <h1 className={`mb-3 text-2xl`}>Create and account</h1>
+        <p className="mb-4">
+          Create your account to unlock all functionallities.
+        </p>
+        <Input
+          id="username"
+          name="username"
+          type="text"
+          label="Username"
+          placeholder="John123"
+          variant="bordered"
+          endContent={<LuUserCircle size={20} />}
+        />
+
+        {state?.errors?.username ? (
+          <div
+            id="customer-error"
+            aria-live="polite"
+            className="mt-2 text-sm text-red-500"
+          >
+            {state.errors.username.map((error: string) => (
+              <p key={error}>{error}</p>
+            ))}
           </div>
-          <div>
-            <label
-              className="mb-3 mt-5 block text-xs font-medium text-gray-900"
-              htmlFor="email"
-            >
-              Email
-            </label>
-            <div className="relative">
-              <input
-                className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
-                id="email"
-                type="email"
-                name="email"
-                placeholder="Enter your email or username"
-              />
-            </div>
-            {state?.errors?.email ? (
-              <div
-                id="customer-error"
-                aria-live="polite"
-                className="mt-2 text-sm text-red-500"
-              >
-                {state.errors.email.map((error: string) => (
-                  <p key={error}>{error}</p>
-                ))}
-              </div>
-            ) : null}
+        ) : null}
+
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          label="Email"
+          placeholder="you@example.com"
+          variant="bordered"
+          endContent={<IoMailOutline size={20} />}
+        />
+
+        {state?.errors?.email ? (
+          <div
+            id="customer-error"
+            aria-live="polite"
+            className="mt-2 text-sm text-red-500"
+          >
+            {state.errors.email.map((error: string) => (
+              <p key={error}>{error}</p>
+            ))}
           </div>
-          <div className="mt-4">
-            <label
-              className="mb-3 mt-5 block text-xs font-medium text-gray-900"
-              htmlFor="password"
+        ) : null}
+
+        <Input
+          id="password"
+          name="password"
+          label="Password"
+          variant="bordered"
+          placeholder="Enter your password"
+          endContent={
+            <button
+              className="focus:outline-none"
+              type="button"
+              onClick={toggleVisibility}
             >
-              Password
-            </label>
-            <div className="relative">
-              <input
-                className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
-                id="password"
-                type="password"
-                name="password"
-                placeholder="Enter password"
-                minLength={6}
-              />
-            </div>
-            {state?.errors?.password ? (
-              <div
-                id="customer-error"
-                aria-live="polite"
-                className="mt-2 text-sm text-red-500"
-              >
-                {state.errors.password.map((error: string) => (
-                  <p key={error}>{error}</p>
-                ))}
-              </div>
-            ) : null}
+              {isVisible ? (
+                <IoEyeOffOutline size={20} />
+              ) : (
+                <IoEyeOutline size={20} />
+              )}
+            </button>
+          }
+          type={isVisible ? "text" : "password"}
+        />
+        {state?.errors?.password ? (
+          <div
+            id="customer-error"
+            aria-live="polite"
+            className="mt-2 text-sm text-red-500"
+          >
+            {state.errors.password.map((error: string) => (
+              <p key={error}>{error}</p>
+            ))}
           </div>
-        </div>
-        <button>register</button>
+        ) : null}
+        <Button type="submit" color="primary" className="mt-2">
+          Register
+        </Button>
+        <p>already have an account?</p>
+        <Link className="text-blue-500" href="/login">
+          Log in
+        </Link>
         <div className="flex h-8 items-end space-x-1">
           {state?.message ? (
             <div
@@ -109,9 +115,6 @@ export default function RegisterForm() {
             </div>
           ) : null}
         </div>
-        <Link className="text-muted text-gray-400" href="/">
-          back
-        </Link>
       </div>
     </form>
   );
