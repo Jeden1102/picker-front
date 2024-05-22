@@ -1,11 +1,13 @@
-import { title } from "@/components/primitives";
 import ConfirmedMessage from "@/components/auth/confirmed-message";
+import { Card } from "@nextui-org/card";
+import Link from "next/link";
 export default async function EmailConfirmed() {
   return (
-    <div>
-      <h1 className={title()}>
-        <ConfirmedMessage />
-      </h1>
-    </div>
+    <Card className="p-4">
+      <ConfirmedMessage />
+      <Link className="text-blue-500" href="/login">
+        Log in
+      </Link>
+    </Card>
   );
 }

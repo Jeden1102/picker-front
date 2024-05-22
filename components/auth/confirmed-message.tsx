@@ -1,8 +1,22 @@
-export default function ConfirmedMessage() {
+"use client";
+import { Card } from "@nextui-org/card";
+import Lottie from "lottie-react";
+import animationData from "@/public/lottie/email-success.json";
+export default function ConfirmationMessage() {
   return (
-    <div className="bg-zinc-100 rounded-sm px-4 py-8 mb-8">
-      <h2 className="font-bold text-lg mb-4">Your email has been confirmed.</h2>
-      <p>you are now able to Login.</p>
+    <div className="p-4">
+      <h2 className="font-semibold text-lg mb-4">
+        Your email has been confirmed
+      </h2>
+      <Lottie
+        style={{ height: 150 }}
+        animationData={animationData}
+        autoplay
+        loop
+      />
+      <p className="text-lg font-light">
+        Your are now able to login to your account
+      </p>
     </div>
   );
 }

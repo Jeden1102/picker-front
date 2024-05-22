@@ -22,8 +22,8 @@ export default function LoginForm() {
           Use the form below to login to the account.
         </p>
         <Input
-          id="identified"
-          name="identified"
+          id="identifier"
+          name="identifier"
           type="email"
           label="Email"
           placeholder="you@example.com"
@@ -74,7 +74,7 @@ export default function LoginForm() {
             ))}
           </div>
         ) : null}
-        <Button color="primary" className="mt-2">
+        <Button type="submit" color="primary" className="mt-2">
           Log in
         </Button>
         <p>or</p>

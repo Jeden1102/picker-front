@@ -1,5 +1,5 @@
 import { title } from "@/components/primitives";
-import { useUser } from "../lib/auth/user-user";
+import { useUser } from "../../lib/auth/user-user";
 export default async function UserPage() {
   const user = await useUser();
   console.log(user);
