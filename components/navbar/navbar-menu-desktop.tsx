@@ -18,7 +18,7 @@ import {
   DropdownItem,
 } from "@nextui-org/dropdown";
 
-async function NavbarMenuDesktop() {
+function NavbarMenuDesktop() {
   const pathname = usePathname();
   return (
     <ul className="hidden md:flex gap-4 justify-start ml-6 items-center">

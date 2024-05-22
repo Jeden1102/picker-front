@@ -1,4 +1,5 @@
 "use client";
+// @ts-expect-error
 import { useFormState } from "react-dom";
 import { loginAction } from "@/app/lib/auth/login-action";
 import Link from "next/link";

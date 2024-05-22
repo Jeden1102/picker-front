@@ -12,7 +12,6 @@ import { Button } from "@nextui-org/button";
 import { ThemeSwitch } from "@/components/theme-switch";
 
 import { gradient } from "@/components/primitives";
-import { isLoggedIn } from "@/app/lib/auth/user-user";
 import UserDropdown from "./navbar/user-dropdown";
 import NavbarMenuDesktop from "./navbar/navbar-menu-desktop";
 import NavbarMenuMobile from "./navbar/navbar-menu-mobile";
@@ -23,9 +22,7 @@ import { Accordion, AccordionItem } from "@nextui-org/accordion";
 import { siteConfig } from "@/config/site";
 import { CiSettings } from "react-icons/ci";
 
-export const Navbar = async () => {
-  const loggedIn = await isLoggedIn();
-
+export const Navbar = ({ loggedIn }: { loggedIn: boolean }) => {
   return (
     <NextUINavbar className="fixed" maxWidth="xl">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
