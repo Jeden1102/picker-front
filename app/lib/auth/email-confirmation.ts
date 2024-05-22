@@ -16,7 +16,6 @@ export async function sendEmailConfirmation(email: string) {
     });
 
     const data = await response.json();
-    console.log(data);
     if (!response.ok && data.error)
       return { message: data.error.message, errors: null };
   } catch (error) {

@@ -13,7 +13,7 @@ import { ThemeSwitch } from "@/components/theme-switch";
 
 import { gradient } from "@/components/primitives";
 import { isLoggedIn } from "@/app/lib/auth/user-user";
-import UserDropdown from "./user/user-dropdown";
+import UserDropdown from "./navbar/user-dropdown";
 import NavbarMenuDesktop from "./navbar/navbar-menu-desktop";
 import NavbarMenuMobile from "./navbar/navbar-menu-mobile";
 
