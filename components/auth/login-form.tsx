@@ -8,6 +8,8 @@ import { Input } from "@nextui-org/input";
 import { useState } from "react";
 import { IoEyeOffOutline, IoEyeOutline, IoMailOutline } from "react-icons/io5";
 import { Button } from "@nextui-org/button";
+import { error } from "@/components/primitives";
+
 export default function LoginForm() {
   const initialState = {};
   const [state, dispatch] = useFormState(loginAction, initialState);
@@ -32,11 +34,7 @@ export default function LoginForm() {
           endContent={<IoMailOutline size={20} />}
         />
         {state?.errors?.identifier ? (
-          <div
-            id="customer-error"
-            aria-live="polite"
-            className="mt-2 text-sm text-red-500"
-          >
+          <div id="customer-error" aria-live="polite" className={error()}>
             {state.errors.identifier.map((error: string) => (
               <p key={error}>{error}</p>
             ))}
@@ -65,11 +63,7 @@ export default function LoginForm() {
           className="max-w-xs"
         />
         {state?.errors?.password ? (
-          <div
-            id="customer-error"
-            aria-live="polite"
-            className="mt-2 text-sm text-red-500"
-          >
+          <div id="customer-error" aria-live="polite" className={error()}>
             {state.errors.password.map((error: string) => (
               <p key={error}>{error}</p>
             ))}
@@ -84,11 +78,7 @@ export default function LoginForm() {
         </Link>
         <div className="flex h-8 items-end space-x-1">
           {state?.message ? (
-            <div
-              id="customer-error"
-              aria-live="polite"
-              className="mt-2 text-sm text-red-500"
-            >
+            <div id="customer-error" aria-live="polite" className={error()}>
               <p>{state.message}</p>
             </div>
           ) : null}

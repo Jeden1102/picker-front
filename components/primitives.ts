@@ -62,3 +62,7 @@ export const gradient = tv({
 export const linkHover = tv({
   base: "relative after:bg-[#FF72E1] after:absolute after:h-0.5 after:w-0 after:-bottom-1 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer",
 });
+
+export const error = tv({
+  base: "text-sm text-red-500 text-left",
+});

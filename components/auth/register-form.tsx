@@ -8,6 +8,8 @@ import { IoEyeOffOutline, IoEyeOutline, IoMailOutline } from "react-icons/io5";
 import { useState } from "react";
 import { Button } from "@nextui-org/button";
 import { LuUserCircle } from "react-icons/lu";
+import { error } from "@/components/primitives";
+
 export default function RegisterForm() {
   const initialState = {};
   const [state, dispatch] = useFormState(registerAction, initialState);
@@ -33,11 +35,7 @@ export default function RegisterForm() {
         />
 
         {state?.errors?.username ? (
-          <div
-            id="customer-error"
-            aria-live="polite"
-            className="mt-2 text-sm text-red-500"
-          >
+          <div id="customer-error" aria-live="polite" className={error()}>
             {state.errors.username.map((error: string) => (
               <p key={error}>{error}</p>
             ))}
@@ -55,11 +53,7 @@ export default function RegisterForm() {
         />
 
         {state?.errors?.email ? (
-          <div
-            id="customer-error"
-            aria-live="polite"
-            className="mt-2 text-sm text-red-500"
-          >
+          <div id="customer-error" aria-live="polite" className={error()}>
             {state.errors.email.map((error: string) => (
               <p key={error}>{error}</p>
             ))}
@@ -88,11 +82,7 @@ export default function RegisterForm() {
           type={isVisible ? "text" : "password"}
         />
         {state?.errors?.password ? (
-          <div
-            id="customer-error"
-            aria-live="polite"
-            className="mt-2 text-sm text-red-500"
-          >
+          <div id="customer-error" aria-live="polite" className={error()}>
             {state.errors.password.map((error: string) => (
               <p key={error}>{error}</p>
             ))}
@@ -107,11 +97,7 @@ export default function RegisterForm() {
         </Link>
         <div className="flex h-8 items-end space-x-1">
           {state?.message ? (
-            <div
-              id="customer-error"
-              aria-live="polite"
-              className="mt-2 text-sm text-red-500"
-            >
+            <div id="customer-error" aria-live="polite" className={error()}>
               <p>{state.message}</p>
             </div>
           ) : null}
