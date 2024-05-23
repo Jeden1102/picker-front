@@ -1,2 +1,1 @@
-4. Middleware for user/login/register/mail etc form.
 5. New password email.
