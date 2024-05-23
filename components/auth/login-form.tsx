@@ -3,7 +3,6 @@
 import { useFormState } from "react-dom";
 import { loginAction } from "@/app/lib/auth/login-action";
 import Link from "next/link";
-import { Card, CardHeader } from "@nextui-org/card";
 import { Input } from "@nextui-org/input";
 import { useState } from "react";
 import { IoEyeOffOutline, IoEyeOutline, IoMailOutline } from "react-icons/io5";

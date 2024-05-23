@@ -50,5 +50,6 @@ export async function registerAction(prevState: any, formData: any) {
     console.log(error);
     return { error: "Server error please try again later." };
   }
+  cookies().set("created-email", email);
   redirect("/email-confirmation");
 }
