@@ -20,7 +20,7 @@ export default function RegisterForm() {
   return (
     <form className="space-y-3" action={dispatch}>
       <div className="flex-1  px-6 pb-4 pt-8 flex flex-col gap-2">
-        <h1 className={`mb-3 text-2xl`}>Create and account</h1>
+        <h1 className={`mb-3 text-2xl`}>Create an account</h1>
         <p className="mb-4">
           Create your account to unlock all functionallities.
         </p>
