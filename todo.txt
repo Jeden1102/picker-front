@@ -1,3 +1,4 @@
+0. Create some better logged user flow - some provider or store?
 1. New password email.
 2. User profile tabs:
 2.1 My settings -> general user settings/danger zone (remove account)
