@@ -12,9 +12,10 @@ import { logoutAction } from "@/app/lib/auth/logout-action";
 import { useState } from "react";
 import { loggedUser } from "@/app/lib/auth/user-user";
 import { siteConfig } from "@/config/site";
+import { UserInterface } from "@/types";
 
 export default function UserDropdown() {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(null as UserInterface | null);
 
     useEffect(() => {
         async function fetchUser() {
@@ -41,11 +42,15 @@ export default function UserDropdown() {
                             <p className="font-semibold">{user?.email}</p>
                         </Link>
                     </DropdownItem>
-                    {siteConfig.userItems.map((item) => (
-                        <DropdownItem key={item.href}>
-                            <Link href={item.href}>{item.label}</Link>
-                        </DropdownItem>
-                    ))}
+                    <DropdownItem>
+                        <Link href="/user/settings">Account settings</Link>
+                    </DropdownItem>
+                    <DropdownItem>
+                        <Link href="/user/scrapes">My scrapes</Link>
+                    </DropdownItem>
+                    <DropdownItem>
+                        <Link href="/user/new-scrape">Add new scrape</Link>
+                    </DropdownItem>
                     <DropdownItem
                         key="logout"
                         color="danger"
