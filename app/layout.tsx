@@ -45,7 +45,7 @@ export default async function RootLayout({
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
           <div className="relative flex flex-col h-screen pt-20 md:pt-0">
             <Navbar loggedIn={!!loggedIn} />
-            <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
+            <main className="container mx-auto max-w-7xl pt-12 px-6 flex-grow">
               {children}
               <CookieBanner />
             </main>
