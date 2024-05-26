@@ -6,7 +6,7 @@ export async function isLoggedIn() {
   return cookies().get("jwt")?.value;
 }
 
-export async function useUser() {
+export async function loggedUser() {
   const STRAPI_URL = process.env.STRAPI_URL;
   if (!STRAPI_URL) throw new Error("Missing STRAPI_URL environment variable.");
   if (!isLoggedIn()) throw new Error("Unauthorized.");
