@@ -105,7 +105,7 @@ export default function RegisterForm() {
           type="submit"
           color="primary"
           className="mt-2"
-          isLoading={isPending}
+          isLoading={isPending && !state.errors && !state.message}
         >
           Register
         </Button>

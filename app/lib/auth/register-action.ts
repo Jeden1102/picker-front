@@ -45,7 +45,6 @@ export async function registerAction(prevState: any, formData: any) {
     if (!response.ok && data.error)
       return { ...prevState, message: data.error.message, errors: null };
     if (response.ok && data.jwt) cookies().set("jwt", data.jwt);
-    sendEmailConfirmation(email);
   } catch (error) {
     console.log(error);
     return { error: "Server error please try again later." };

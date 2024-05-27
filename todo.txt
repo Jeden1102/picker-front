@@ -1,5 +1,5 @@
 1. New password email.
-- to add password change info
+- to add sameas password confirmation
 2. User profile tabs:
 2.1 My settings -> general user settings/danger zone (remove account)
 2.2 Create scrape -> multipart form:
