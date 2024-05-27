@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 
-export function getLocalStorage(key: string, defaultValue: boolean) {
+export function getLocalStorage(key: string, defaultValue: boolean | null) {
   const stickyValue = localStorage.getItem(key);
 
   return stickyValue !== null && stickyValue !== "undefined"
@@ -8,6 +8,6 @@ export function getLocalStorage(key: string, defaultValue: boolean) {
     : defaultValue;
 }
 
-export function setLocalStorage(key: string, value: boolean) {
+export function setLocalStorage(key: string, value: boolean | null) {
   localStorage.setItem(key, JSON.stringify(value));
 }
