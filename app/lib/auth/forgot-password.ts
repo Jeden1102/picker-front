@@ -37,7 +37,7 @@ export async function sendForgotPasswordEmail(prevState: any, formData: any) {
 
     const data = await response.json();
 
-    return { message: "Email has been send succesfully!" };
+    return { message: "Email has been send succesfully!", success: true };
   } catch (error) {
     console.log(error);
     return { error: "Server error please try again later." };

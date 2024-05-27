@@ -95,7 +95,6 @@ export default function LoginForm() {
           variant="flat"
           href="/register"
           as={Link}
-          isLoading={isPending}
         >
           Create an account
         </Button>

@@ -17,17 +17,12 @@ export default function ResetPasswordForm({ code }: Props) {
 
   const initialState = { code };
   const [isPending, startTransition] = useTransition();
-  const [isSend, setIsSend] = useState(false);
 
   const [state, dispatch] = useFormState(resetPassword, initialState);
 
   const handleSubmit = async (formData: FormData) => {
     startTransition(async () => {
-      const response = await dispatch(formData);
-
-      if (response?.message) {
-        setIsSend(true);
-      }
+      dispatch(formData);
     });
   };
 
@@ -105,15 +100,11 @@ export default function ResetPasswordForm({ code }: Props) {
           color="primary"
           className="mt-2"
           isLoading={isPending}
-          disabled={isSend}
+          disabled={state.success}
         >
           Send
         </Button>
-        {isSend && (
-          <p>
-            Password has been resetted succesfully. Now you are able to login.
-          </p>
-        )}
+        {state.message && <p>{state.message}</p>}
       </div>
     </form>
   );

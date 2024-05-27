@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export async function resetPassword(prevState: any, formData: any) {
   const STRAPI_URL = process.env.STRAPI_URL;
-  const url = `${STRAPI_URL}/api/auth/send-email-confirmation`;
+  const url = `${STRAPI_URL}/api/auth/reset-password`;
   if (!STRAPI_URL) throw new Error("Missing STRAPI_URL environment variable.");
 
   const formSchema = z.object({
@@ -40,8 +40,9 @@ export async function resetPassword(prevState: any, formData: any) {
     });
 
     const data = await response.json();
+    console.log(data);
 
-    return { message: "Password reset succesfully!" };
+    return { message: "Password reset succesfully!", success: true };
   } catch (error) {
     console.log(error);
     return { error: "Server error please try again later." };
