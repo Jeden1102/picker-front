@@ -5,7 +5,7 @@ import { registerAction } from "@/app/lib/auth/register-action";
 import Link from "next/link";
 import { Input } from "@nextui-org/input";
 import { IoEyeOffOutline, IoEyeOutline, IoMailOutline } from "react-icons/io5";
-import { useState } from "react";
+import { useState, useEffect, useTransition } from "react";
 import { Button } from "@nextui-org/button";
 import { LuUserCircle } from "react-icons/lu";
 import { error } from "@/components/primitives";
@@ -17,8 +17,21 @@ export default function RegisterForm() {
   const [isVisible, setIsVisible] = useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
+
+  const [isPending, startTransition] = useTransition();
+
+  const handleSubmit = async (formData: FormData) => {
+    startTransition(() => {
+      dispatch(formData);
+    });
+  };
+
+  useEffect(() => {
+    if (isPending) return;
+  }, [isPending]);
+
   return (
-    <form className="space-y-3" action={dispatch}>
+    <form className="space-y-3" action={handleSubmit}>
       <div className="flex-1  px-6 pb-4 pt-8 flex flex-col gap-2">
         <h1 className={`mb-3 text-2xl`}>Create an account</h1>
         <p className="mb-4">
@@ -88,7 +101,12 @@ export default function RegisterForm() {
             ))}
           </div>
         ) : null}
-        <Button type="submit" color="primary" className="mt-2">
+        <Button
+          type="submit"
+          color="primary"
+          className="mt-2"
+          isLoading={isPending}
+        >
           Register
         </Button>
         <p>already have an account?</p>

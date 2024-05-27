@@ -4,20 +4,32 @@ import { useFormState } from "react-dom";
 import { loginAction } from "@/app/lib/auth/login-action";
 import Link from "next/link";
 import { Input } from "@nextui-org/input";
-import { useState } from "react";
+import { FormEvent, useState, useTransition, useEffect } from "react";
 import { IoEyeOffOutline, IoEyeOutline, IoMailOutline } from "react-icons/io5";
 import { Button } from "@nextui-org/button";
 import { error } from "@/components/primitives";
 
 export default function LoginForm() {
   const initialState = {};
+  const [isPending, startTransition] = useTransition();
+
   const [state, dispatch] = useFormState(loginAction, initialState);
 
   const [isVisible, setIsVisible] = useState(false);
 
+  const handleSubmit = async (formData: FormData) => {
+    startTransition(() => {
+      dispatch(formData);
+    });
+  };
+
+  useEffect(() => {
+    if (isPending) return;
+  }, [isPending]);
+
   const toggleVisibility = () => setIsVisible(!isVisible);
   return (
-    <form className="space-y-3 md:px-8" action={dispatch}>
+    <form className="space-y-3 md:px-8" action={handleSubmit}>
       <div className="flex-1 px-6 pb-4 pt-8 flex flex-col gap-2">
         <h2 className="text-2xl">Log in to your account</h2>
         <p className="font-light mb-6">
@@ -68,7 +80,12 @@ export default function LoginForm() {
             ))}
           </div>
         ) : null}
-        <Button type="submit" color="primary" className="mt-2">
+        <Button
+          type="submit"
+          color="primary"
+          className="mt-2"
+          isLoading={isPending}
+        >
           Log in
         </Button>
         <p>or</p>
