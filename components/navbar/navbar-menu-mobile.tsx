@@ -4,7 +4,7 @@ import { Navbar as NextUINavbar, NavbarItem } from "@nextui-org/navbar";
 import { Accordion, AccordionItem } from "@nextui-org/accordion";
 
 import { siteConfig } from "@/config/site";
-import NextLink from "next/link";
+import Link from "next/link";
 import { CiSettings } from "react-icons/ci";
 
 function NavbarMenuMobile() {
@@ -14,9 +14,9 @@ function NavbarMenuMobile() {
         <NavbarItem key={item.href}>
           {!item.subItems && (
             <div className="px-2 py-2 md:py-0">
-              <NextLink color="foreground" href={item.href}>
+              <Link color="foreground" href={item.href}>
                 {item.label}
-              </NextLink>
+              </Link>
             </div>
           )}
           {item.subItems && (
@@ -25,7 +25,7 @@ function NavbarMenuMobile() {
                 {item.subItems.map((section) => (
                   <div key={section.label}>
                     {section.items.map((section) => (
-                      <NextLink
+                      <Link
                         key={section.label}
                         color="foreground"
                         href={section.href}
@@ -38,7 +38,7 @@ function NavbarMenuMobile() {
                             {section.desciption}
                           </span>
                         </div>
-                      </NextLink>
+                      </Link>
                     ))}
                   </div>
                 ))}

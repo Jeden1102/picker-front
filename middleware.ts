@@ -8,7 +8,7 @@ export function middleware(request: NextRequest) {
 
   const authPaths = ["/user"];
 
-  const anonymousPaths = ["/login", "/register"];
+  const anonymousPaths = ["/login", "/register", "forgot-password"];
 
   if (authPaths.includes(currentPath) && cookie === undefined) {
     return NextResponse.redirect(new URL("/login", request.url));

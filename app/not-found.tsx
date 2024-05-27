@@ -1,4 +1,4 @@
-import NextLink from "next/link";
+import Link from "next/link";
 import { Button } from "@nextui-org/button";
 import { gradient } from "@/components/primitives";
 
@@ -14,16 +14,16 @@ function NotFoundPage() {
           Sorry, we couldn’t find the page you’re looking for.
         </p>
         <div className="mt-10 flex items-center justify-center gap-x-4">
-          <NextLink href="/login">
+          <Link href="/login">
             <Button color="primary" variant="solid">
               Go home
             </Button>
-          </NextLink>
-          <NextLink href="/support">
+          </Link>
+          <Link href="/support">
             <Button color="default" variant="solid">
               Contact support
             </Button>
-          </NextLink>
+          </Link>
         </div>
       </div>
     </main>

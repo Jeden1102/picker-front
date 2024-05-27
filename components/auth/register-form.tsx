@@ -110,9 +110,15 @@ export default function RegisterForm() {
           Register
         </Button>
         <p>already have an account?</p>
-        <Link className="text-blue-500" href="/login">
+        <Button
+          type="button"
+          color="default"
+          variant="flat"
+          href="/login"
+          as={Link}
+        >
           Log in
-        </Link>
+        </Button>
         <div className="flex h-8 items-end space-x-1">
           {state?.message ? (
             <div id="customer-error" aria-live="polite" className={error()}>

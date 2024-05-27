@@ -3,7 +3,7 @@
 import { Navbar as NextUINavbar, NavbarItem } from "@nextui-org/navbar";
 
 import { siteConfig } from "@/config/site";
-import NextLink from "next/link";
+import Link from "next/link";
 import { CiSettings } from "react-icons/ci";
 
 import { gradient, linkHover } from "@/components/primitives";
@@ -26,7 +26,7 @@ function NavbarMenuDesktop() {
         <NavbarItem key={item.href}>
           {!item.subItems && (
             <div className="px-3">
-              <NextLink
+              <Link
                 className={clsx(
                   "!font-normal",
                   pathname === item.href
@@ -37,7 +37,7 @@ function NavbarMenuDesktop() {
                 href={item.href}
               >
                 {item.label}
-              </NextLink>
+              </Link>
             </div>
           )}
           {item.subItems && (
@@ -50,13 +50,13 @@ function NavbarMenuDesktop() {
               }}
             >
               <DropdownTrigger>
-                <NextLink
+                <Link
                   className={clsx("!font-normal", linkHover())}
                   color="foreground"
                   href="#"
                 >
                   {item.label}
-                </NextLink>
+                </Link>
               </DropdownTrigger>
               <DropdownMenu
                 variant="faded"

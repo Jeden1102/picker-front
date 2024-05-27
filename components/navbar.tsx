@@ -8,7 +8,7 @@ import {
 } from "@nextui-org/navbar";
 
 import { usePathname } from "next/navigation";
-import NextLink from "next/link";
+import Link from "next/link";
 import { Button } from "@nextui-org/button";
 
 import { ThemeSwitch } from "@/components/theme-switch";
@@ -32,11 +32,11 @@ export const Navbar = ({ loggedIn }: { loggedIn: boolean }) => {
     <NextUINavbar isMenuOpen={isMenuOpen} className="fixed" maxWidth="xl">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
-          <NextLink className="flex justify-start items-center gap-1" href="/">
+          <Link className="flex justify-start items-center gap-1" href="/">
             <p className="text-lg">
               Page<span className={gradient({ color: "pink" })}>Scraper</span>
             </p>
-          </NextLink>
+          </Link>
         </NavbarBrand>
         <NavbarMenuDesktop />
       </NavbarContent>
@@ -47,16 +47,16 @@ export const Navbar = ({ loggedIn }: { loggedIn: boolean }) => {
         {!loggedIn && (
           <NavbarItem className="hidden md:flex gap-2">
             <ThemeSwitch />
-            <NextLink href="/login">
+            <Link href="/login">
               <Button color="primary" variant="solid">
                 Log in
               </Button>
-            </NextLink>
-            <NextLink href="/register">
+            </Link>
+            <Link href="/register">
               <Button color="default" variant="bordered">
                 Register
               </Button>
-            </NextLink>
+            </Link>
           </NavbarItem>
         )}
       </NavbarContent>
@@ -77,16 +77,16 @@ export const Navbar = ({ loggedIn }: { loggedIn: boolean }) => {
           <NavbarMenuMobile />
           {!loggedIn && (
             <div className="mt-12 flex gap-4">
-              <NextLink href="/login">
+              <Link href="/login">
                 <Button color="primary" variant="solid">
                   Log in
                 </Button>
-              </NextLink>
-              <NextLink href="/register">
+              </Link>
+              <Link href="/register">
                 <Button color="default" variant="bordered">
                   Register
                 </Button>
-              </NextLink>
+              </Link>
             </div>
           )}
           {loggedIn && <UserDropdown />}

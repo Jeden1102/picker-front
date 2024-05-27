@@ -89,8 +89,18 @@ export default function LoginForm() {
           Log in
         </Button>
         <p>or</p>
-        <Link className="text-blue-500" href="/register">
+        <Button
+          type="submit"
+          color="default"
+          variant="flat"
+          href="/register"
+          as={Link}
+          isLoading={isPending}
+        >
           Create an account
+        </Button>
+        <Link className="text-blue-500 mt-4" href="/forgot-password">
+          Forgot password?
         </Link>
         <div className="flex h-8 items-end space-x-1">
           {state?.message ? (

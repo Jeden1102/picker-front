@@ -1,6 +1,6 @@
 "use client";
 
-import NextLink from "next/link";
+import Link from "next/link";
 import { gradient } from "../primitives";
 import clsx from "clsx";
 import { Card, CardBody } from "@nextui-org/card";
@@ -19,7 +19,7 @@ function LearnMore() {
           harum.
         </p>
         <div className="flex gap-4 my-6 flex-col md:flex-row justify-center">
-          <NextLink href="/faq">
+          <Link href="/faq">
             <Card className="md:p-4 w-full">
               <CardBody>
                 <Image
@@ -37,8 +37,8 @@ function LearnMore() {
                 </h3>
               </CardBody>
             </Card>
-          </NextLink>
-          <NextLink href="/faq">
+          </Link>
+          <Link href="/faq">
             <Card className="md:p-4 w-full">
               <CardBody>
                 <Image
@@ -56,7 +56,7 @@ function LearnMore() {
                 </h3>
               </CardBody>
             </Card>
-          </NextLink>
+          </Link>
         </div>
       </div>
     </>
