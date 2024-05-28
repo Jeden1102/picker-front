@@ -6,10 +6,15 @@ export async function resetPassword(prevState: any, formData: any) {
   const url = `${STRAPI_URL}/api/auth/reset-password`;
   if (!STRAPI_URL) throw new Error("Missing STRAPI_URL environment variable.");
 
-  const formSchema = z.object({
-    password: z.string().min(6).max(30).trim(),
-    passwordConfirmation: z.string().min(6).max(30).trim(),
-  });
+  const formSchema = z
+    .object({
+      password: z.string().min(6).max(30).trim(),
+      passwordConfirmation: z.string().min(6).max(30).trim(),
+    })
+    .refine((data) => data.password === data.passwordConfirmation, {
+      message: "Passwords don't match",
+      path: ["confirm"],
+    });
 
   const validatedFields = formSchema.safeParse({
     password: formData.get("password"),
@@ -19,7 +24,7 @@ export async function resetPassword(prevState: any, formData: any) {
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: "Missing Fields. Failed to Login.",
+      message: "There was an error resettig your password.",
     };
   }
 
