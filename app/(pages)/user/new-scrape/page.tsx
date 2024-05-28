@@ -1,3 +1,9 @@
+import ScrapeFormWrapper from "@/components/scrape/scrape-form-wrapper";
+
 export default async function UserNewScrape() {
-    return <div>New Scrape</div>;
+  return (
+    <>
+      <ScrapeFormWrapper />
+    </>
+  );
 }
