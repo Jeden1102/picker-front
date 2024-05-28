@@ -76,7 +76,7 @@ export const siteConfig = {
   userItems: [
     {
       label: "My account",
-      href: "/user",
+      href: "/usersettings",
     },
     {
       label: "My scrapes",
