@@ -12,18 +12,22 @@ function ScrapeFormSteps({ activeStep, setActiveStep }: Props) {
 
   return (
     <Card className={clsx(gradientBg({ color: "blue" }), "text-white")}>
-      {activeStep}
       <CardBody>
-        <div className="flex">
+        <div className="flex gap-6 justify-center">
           {steps.map((step, i) => (
-            <button onClick={() => setActiveStep(i)}>
-              <span>{i + 1}</span>
-              <div className={activeStep === i ? "block" : "hidden md:block"}>
-                <p>Step {i + 1}</p>
-                <p>{step}</p>
-              </div>
+            <button
+              className="flex flex-col items-center justify-center"
+              onClick={() => setActiveStep(i)}
+            >
+              <span className="w-10 h-10 rounded-full border-2 font-semibold border-white flex items-center justify-center">
+                {i + 1}
+              </span>
             </button>
           ))}
+        </div>
+        <div className="mt-4">
+          <p className="uppercase font-light">Step {activeStep + 1}</p>
+          <p>{steps[activeStep]}</p>
         </div>
       </CardBody>
     </Card>
