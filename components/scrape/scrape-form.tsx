@@ -1,6 +1,8 @@
-import React from "react";
+interface Props {
+  activeStep: number;
+}
 
-function ScrapeForm() {
+function ScrapeForm({ activeStep }: Props) {
   return <div>ScrapeForm</div>;
 }
 

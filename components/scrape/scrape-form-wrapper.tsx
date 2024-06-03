@@ -9,18 +9,20 @@ function ScrapeFormWrapper() {
   const [activeStep, setActiveStep] = useState(0);
   return (
     <div>
-      {activeStep}
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row gap-6">
         <ScrapeFormSteps
           activeStep={activeStep}
           setActiveStep={(step) => setActiveStep(step)}
         />
         <div className="flex flex-col">
-          <ScrapeFormHeadings />
-          <ScrapeForm />
+          <ScrapeFormHeadings activeStep={activeStep} />
+          <ScrapeForm activeStep={activeStep} />
         </div>
       </div>
-      <ScrapeFormNavigation />
+      <ScrapeFormNavigation
+        activeStep={activeStep}
+        setActiveStep={(step) => setActiveStep(step)}
+      />
     </div>
   );
 }

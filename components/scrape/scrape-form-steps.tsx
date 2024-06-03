@@ -19,15 +19,22 @@ function ScrapeFormSteps({ activeStep, setActiveStep }: Props) {
               className="flex flex-col items-center justify-center"
               onClick={() => setActiveStep(i)}
             >
-              <span className="w-10 h-10 rounded-full border-2 font-semibold border-white flex items-center justify-center">
+              <span
+                className={clsx(
+                  {
+                    "bg-white text-gray-800": activeStep === i,
+                  },
+                  "w-10 h-10 rounded-full border-2 font-semibold border-white flex items-center justify-center"
+                )}
+              >
                 {i + 1}
               </span>
             </button>
           ))}
         </div>
         <div className="mt-4">
-          <p className="uppercase font-light">Step {activeStep + 1}</p>
-          <p>{steps[activeStep]}</p>
+          <p className="uppercase font-light text-sm">Step {activeStep + 1}</p>
+          <p className="uppercase">{steps[activeStep]}</p>
         </div>
       </CardBody>
     </Card>
