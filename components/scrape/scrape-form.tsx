@@ -36,11 +36,11 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
   const firstStepSchema = z.object({
     name: z.string().min(1),
     description: z.string().min(1),
-    website: z.string().min(1).url(),
+    website: z.string().min(1),
   });
 
   const secondStepSchema = z.object({
-    key: !formValues[0].public ? z.string().min(1) : z.string().min(0),
+    key: !formValues[1].public ? z.string().min(1) : z.string().min(0),
   });
 
   const handleInputChange = (
@@ -92,12 +92,17 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
         key: formValues[1].key,
       },
     };
-    const validatedFields = firstStepSchema.safeParse(schemas[activeStep]);
-    // here -> add if/else for firstStepSchema/second...
-    console.log(activeStep, schemas[activeStep]);
+
+    const validationOptions: Record<number, any> = {
+      0: firstStepSchema.safeParse(schemas[activeStep]),
+      1: secondStepSchema.safeParse(schemas[activeStep]),
+    };
+
+    const validatedFields = validationOptions[activeStep];
 
     if (!validatedFields.success) {
       setValidationErrors(validatedFields.error.flatten().fieldErrors);
+      console.log(validationErrors);
       return;
     }
 
@@ -183,6 +188,9 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
                 value={formValues[1].key as string}
                 onChange={(e) => handleInputChange(e, 1)}
               />
+              {validationErrors.key && (
+                <span className={error()}>{validationErrors.key}</span>
+              )}
               <Button onClick={setUniqueKey}>Auto generate</Button>
             </>
           )}
@@ -191,7 +199,9 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
       <div className="flex gap-4">
         <Button
           disabled={activeStep === 0}
-          onClick={() => setActiveStep(activeStep - 1)}
+          onClick={() => {
+            setActiveStep(activeStep - 1), setValidationErrors({});
+          }}
         >
           Back
         </Button>
