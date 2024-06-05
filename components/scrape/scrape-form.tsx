@@ -5,6 +5,15 @@ import { Button } from "@nextui-org/button";
 import { v4 } from "uuid";
 import z from "zod";
 import { error } from "@/components/primitives";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+} from "@nextui-org/modal";
+import { Snippet } from "@nextui-org/snippet";
 
 interface FormValues {
   [key: number]: {
@@ -19,6 +28,7 @@ interface Props {
 
 function ScrapeForm({ activeStep, setActiveStep }: Props) {
   const [validationErrors, setValidationErrors] = useState({} as any);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const [formValues, setFormValues] = useState<FormValues>({
     0: {
@@ -72,11 +82,13 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
   };
 
   const setUniqueKey = () => {
+    const key = v4();
+    navigator.clipboard.writeText(key);
     setFormValues((prevValues) => ({
       ...prevValues,
       1: {
         ...prevValues[1],
-        key: v4(),
+        key: key,
       },
     }));
   };
@@ -102,7 +114,6 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
 
     if (!validatedFields.success) {
       setValidationErrors(validatedFields.error.flatten().fieldErrors);
-      console.log(validationErrors);
       return;
     }
 
@@ -191,7 +202,37 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
               {validationErrors.key && (
                 <span className={error()}>{validationErrors.key}</span>
               )}
-              <Button onClick={setUniqueKey}>Auto generate</Button>
+              <Button onClick={setUniqueKey} onPress={onOpen}>
+                Auto generate
+              </Button>
+              <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                <ModalContent>
+                  {(onClose) => (
+                    <>
+                      <ModalHeader className="flex flex-col gap-1">
+                        Unique code copied!
+                      </ModalHeader>
+                      <ModalBody>
+                        <p>Your unique api key code has been generated.</p>
+                        <Snippet>{formValues[1].key}</Snippet>
+                        <p>
+                          I has been automatically copied to your cliboard. Save
+                          it for later!
+                        </p>
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button
+                          color="danger"
+                          variant="light"
+                          onPress={onClose}
+                        >
+                          Close
+                        </Button>
+                      </ModalFooter>
+                    </>
+                  )}
+                </ModalContent>
+              </Modal>
             </>
           )}
         </>
