@@ -18,6 +18,7 @@ function ScrapeFormSteps({ activeStep, setActiveStep }: Props) {
             <button
               className="flex flex-col items-center justify-center"
               onClick={() => setActiveStep(i)}
+              key={i}
             >
               <span
                 className={clsx(
