@@ -3,6 +3,8 @@ import { Input, Textarea } from "@nextui-org/input";
 import { Checkbox } from "@nextui-org/checkbox";
 import { Button } from "@nextui-org/button";
 import { v4 } from "uuid";
+import z from "zod";
+import { error } from "@/components/primitives";
 
 interface FormValues {
   [key: number]: {
@@ -12,11 +14,12 @@ interface FormValues {
 
 interface Props {
   activeStep: number;
-  activeStepTmp: number;
   setActiveStep: (step: number) => void;
 }
 
-function ScrapeForm({ activeStep, activeStepTmp, setActiveStep }: Props) {
+function ScrapeForm({ activeStep, setActiveStep }: Props) {
+  const [validationErrors, setValidationErrors] = useState({} as any);
+
   const [formValues, setFormValues] = useState<FormValues>({
     0: {
       name: "",
@@ -28,6 +31,16 @@ function ScrapeForm({ activeStep, activeStepTmp, setActiveStep }: Props) {
       public: true,
       key: "",
     },
+  });
+
+  const firstStepSchema = z.object({
+    name: z.string().min(1),
+    description: z.string().min(1),
+    website: z.string().min(1).url(),
+  });
+
+  const secondStepSchema = z.object({
+    key: !formValues[0].public ? z.string().min(1) : z.string().min(0),
   });
 
   const handleInputChange = (
@@ -69,13 +82,27 @@ function ScrapeForm({ activeStep, activeStepTmp, setActiveStep }: Props) {
   };
 
   const validateStep = (step: number) => {
-    // @here - add validation.
+    const schemas: Record<number, object> = {
+      0: {
+        name: formValues[0].name,
+        description: formValues[0].description,
+        website: formValues[0].website,
+      },
+      1: {
+        key: formValues[1].key,
+      },
+    };
+    const validatedFields = firstStepSchema.safeParse(schemas[activeStep]);
+    // here -> add if/else for firstStepSchema/second...
+    console.log(activeStep, schemas[activeStep]);
+
+    if (!validatedFields.success) {
+      setValidationErrors(validatedFields.error.flatten().fieldErrors);
+      return;
+    }
+
     setActiveStep(step);
   };
-
-  useEffect(() => {
-    validateStep(activeStepTmp);
-  }, [activeStepTmp]);
 
   return (
     <form className="flex flex-col gap-2 mb-4">
@@ -90,6 +117,9 @@ function ScrapeForm({ activeStep, activeStepTmp, setActiveStep }: Props) {
             value={formValues[0].name as string}
             onChange={(e) => handleInputChange(e, 0)}
           />
+          {validationErrors.name && (
+            <span className={error()}>{validationErrors.name}</span>
+          )}
           <Textarea
             name="description"
             label="Description"
@@ -98,6 +128,9 @@ function ScrapeForm({ activeStep, activeStepTmp, setActiveStep }: Props) {
             value={formValues[0].description as string}
             onChange={(e) => handleInputChange(e, 0)}
           />
+          {validationErrors.description && (
+            <span className={error()}>{validationErrors.description}</span>
+          )}
           <Input
             type="url"
             label="Website"
@@ -111,6 +144,9 @@ function ScrapeForm({ activeStep, activeStepTmp, setActiveStep }: Props) {
               </div>
             }
           />
+          {validationErrors.website && (
+            <span className={error()}>{validationErrors.website}</span>
+          )}
         </>
       )}
       {activeStep === 1 && (
@@ -152,6 +188,21 @@ function ScrapeForm({ activeStep, activeStepTmp, setActiveStep }: Props) {
           )}
         </>
       )}
+      <div className="flex gap-4">
+        <Button
+          disabled={activeStep === 0}
+          onClick={() => setActiveStep(activeStep - 1)}
+        >
+          Back
+        </Button>
+        <Button
+          disabled={activeStep === 3}
+          color="primary"
+          onClick={() => validateStep(activeStep + 1)}
+        >
+          Next
+        </Button>
+      </div>
     </form>
   );
 }
