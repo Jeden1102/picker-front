@@ -33,11 +33,11 @@ function ScrapeFormSteps({ activeStep }: Props) {
               >
                 {i + 1}
               </span>
-              <div className="hidden md:block">
+              <div className="hidden md:block w-full">
                 <p className="uppercase font-light text-sm">
                   Step {activeStep + 1}
                 </p>
-                <p className="uppercase">{steps[activeStep]}</p>
+                <p className="uppercase">{steps[i]}</p>
               </div>
             </div>
           ))}

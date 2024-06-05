@@ -110,7 +110,7 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
   };
 
   return (
-    <form className="flex flex-col gap-2 mb-4">
+    <form className="flex flex-col gap-2 my-8">
       {activeStep === 0 && (
         <>
           <Input
@@ -196,7 +196,7 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
           )}
         </>
       )}
-      <div className="flex gap-4">
+      <div className="flex gap-4 mt-4">
         <Button
           disabled={activeStep === 0}
           onClick={() => {

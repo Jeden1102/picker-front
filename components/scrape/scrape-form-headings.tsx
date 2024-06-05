@@ -19,7 +19,8 @@ function ScrapeFormHeadings({ activeStep }: Props) {
     },
     {
       title: "Some details",
-      subtitle: "Pick the content to be scraped from selected page.",
+      subtitle:
+        "Pick the content to be scraped from selected page. Manually get the selector of element, or use our <a target='_blank' class='text-blue-500 underline' href='https://google.com'>Picker extension</a>",
     },
     {
       title: "Verify",
@@ -31,7 +32,10 @@ function ScrapeFormHeadings({ activeStep }: Props) {
       <h1 className={clsx(gradient({ color: "pink" }), "text-2xl")}>
         {headings[activeStep].title}
       </h1>
-      <p className="font-light my-2">{headings[activeStep].subtitle}</p>
+      <p
+        className="font-light my-2"
+        dangerouslySetInnerHTML={{ __html: headings[activeStep].subtitle }}
+      ></p>
     </div>
   );
 }
