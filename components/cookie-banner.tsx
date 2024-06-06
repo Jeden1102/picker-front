@@ -7,20 +7,22 @@ import { Button } from "@nextui-org/button";
 import clsx from "clsx";
 
 function CookieBanner() {
-  const [cookieConsent, setCookieConsent] = useState(
-    getLocalStorage("cookie_consent", null) as null | boolean
-  );
+  const [cookieConsent, setCookieConsent] = useState(null as null | boolean);
 
   const setCookie = () => {
     setCookieConsent(true);
     setLocalStorage("cookie_consent", true);
   };
+
+  useEffect(() => {
+    setCookieConsent(getLocalStorage("cookie_consent", false));
+  }, []);
   return (
     <Card
       className={clsx({
-        "flex  flex-col fixed inset-x-0 rounded-b-none bottom-0 z-20 p-4  justify-between gap-x-8 gap-y-4 md:flex-row md:items-center lg:px-8 xs:block":
+        "hidden  flex-col fixed inset-x-0 rounded-b-none bottom-0 z-20 p-4 justify-between gap-x-8 gap-y-4 md:flex-row md:items-center lg:px-8 xs:block":
           true,
-        hidden: typeof cookieConsent === "boolean",
+        flex: cookieConsent === false || null,
       })}
     >
       <p className="max-w-4xl text-sm leading-6 text-gray-900 dark:text-gray-100">

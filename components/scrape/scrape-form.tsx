@@ -14,7 +14,7 @@ import {
   useDisclosure,
 } from "@nextui-org/modal";
 import { Snippet } from "@nextui-org/snippet";
-
+import { scrape } from "@/app/api/scrape";
 interface FormValues {
   [key: number]: {
     [key: string]: string | boolean;
@@ -117,7 +117,16 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
       return;
     }
 
+    if (step === 1) {
+      fetchPage();
+    }
+
     setActiveStep(step);
+  };
+
+  const fetchPage = async () => {
+    const res = await scrape(`https:${formValues[0].website}`);
+    console.log(res);
   };
 
   return (
@@ -148,7 +157,7 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
             <span className={error()}>{validationErrors.description}</span>
           )}
           <Input
-            type="url"
+            type="text"
             label="Website"
             placeholder="nextui.org"
             name="website"
