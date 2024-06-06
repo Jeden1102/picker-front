@@ -14,7 +14,7 @@ import {
   useDisclosure,
 } from "@nextui-org/modal";
 import { Snippet } from "@nextui-org/snippet";
-import { scrape } from "@/app/api/scrape";
+import ScrapeSideTabs from "./scrape-side-tabs";
 interface FormValues {
   [key: number]: {
     [key: string]: string | boolean;
@@ -125,12 +125,14 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
   };
 
   const fetchPage = async () => {
-    const res = await scrape(`https:${formValues[0].website}`);
-    console.log(res);
+    const res = await fetch(`/api/scrape?url=https://${formValues[0].website}`);
+
+    const data = await res.json();
   };
 
   return (
     <form className="flex flex-col gap-2 my-8">
+      <ScrapeSideTabs />
       {activeStep === 0 && (
         <>
           <Input
