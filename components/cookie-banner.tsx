@@ -7,12 +7,9 @@ import { Button } from "@nextui-org/button";
 import clsx from "clsx";
 
 function CookieBanner() {
-  const [cookieConsent, setCookieConsent] = useState(null as null | boolean);
-
-  useEffect(() => {
-    const storedCookieConsent = getLocalStorage("cookie_consent", null);
-    setCookieConsent(storedCookieConsent);
-  }, []);
+  const [cookieConsent, setCookieConsent] = useState(
+    getLocalStorage("cookie_consent", null) as null | boolean
+  );
 
   const setCookie = () => {
     setCookieConsent(true);
@@ -26,7 +23,6 @@ function CookieBanner() {
         hidden: typeof cookieConsent === "boolean",
       })}
     >
-      {typeof cookieConsent} {cookieConsent ? "tak" : "nie"}
       <p className="max-w-4xl text-sm leading-6 text-gray-900 dark:text-gray-100">
         This website uses cookies to enhance your browsing experience, analyze
         site traffic, and serve better user experiences. By continuing to use
