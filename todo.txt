@@ -1,7 +1,6 @@
 2. User profile tabs:
 2.2 Create scrape -> multipart form:
-- general (name, description),
-- authorization (checkbox authorize/no, authorize api key auto genearte / custom)
+- scraping side panel for help / current result add
 - scraping add panel
 - summary
 2.3 My scrapes -> list of scraping
