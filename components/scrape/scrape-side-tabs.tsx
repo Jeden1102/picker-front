@@ -1,63 +1,15 @@
-import { Button } from "@nextui-org/button";
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  useDisclosure,
-  ModalBody,
-  ModalFooter,
-} from "@nextui-org/modal";
+import ScrapeSideTabHelp from "./scrape-side-tab-help";
+import ScrapeSideTabResults from "./scrape-side-tab-results";
+import { Card, CardBody } from "@nextui-org/card";
 function ScrapeSideTabs() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  return (
-    <>
-      <Button onPress={onOpen}>Open Modal</Button>
-      <Modal
-        className="absolute right-0 top-0 h-full m-0 sm:m-0"
-        backdrop="opaque"
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Modal Title
-              </ModalHeader>
-              <ModalBody>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Magna exercitation reprehenderit magna aute tempor cupidatat
-                  consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
-                  incididunt cillum quis. Velit duis sit officia eiusmod Lorem
-                  aliqua enim laboris do dolor eiusmod. Et mollit incididunt
-                  nisi consectetur esse laborum eiusmod pariatur proident Lorem
-                  eiusmod et. Culpa deserunt nostrud ad veniam.
-                </p>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-    </>
-  );
+    return (
+        <Card className="fixed right-0 bottom-4 xl:bottom-1/2 z-50 flex flex-col gap-4 md:rounded-r-none">
+            <CardBody className="flex flex-col gap-4">
+                <ScrapeSideTabHelp />
+                <ScrapeSideTabResults />
+            </CardBody>
+        </Card>
+    );
 }
 
 export default ScrapeSideTabs;
