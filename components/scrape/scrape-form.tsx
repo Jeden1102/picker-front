@@ -194,6 +194,23 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
     );
   };
 
+  useEffect(() => {
+    function checkScrapeObject() {
+      console.log("teraz1");
+      if (!localStorage.getItem("scrape-object")) return;
+
+      const scrapeObject = JSON.parse(
+        localStorage.getItem("scrape-object") ?? ""
+      );
+    }
+
+    window.addEventListener("storage", checkScrapeObject);
+
+    return () => {
+      window.removeEventListener("storage", checkScrapeObject);
+    };
+  }, []);
+
   return (
     <form className="flex flex-col gap-2 my-8">
       <ScrapeSideTabs activeStep={activeStep} />
