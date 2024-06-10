@@ -5,6 +5,7 @@ import { Button } from "@nextui-org/button";
 import { v4 } from "uuid";
 import z from "zod";
 import { error } from "@/components/primitives";
+import { Card, CardBody } from "@nextui-org/card";
 import {
   Modal,
   ModalContent,
@@ -15,15 +16,21 @@ import {
 } from "@nextui-org/modal";
 import { Snippet } from "@nextui-org/snippet";
 import ScrapeSideTabs from "./scrape-side-tabs";
+
 interface FormValues {
   [key: number]: {
-    [key: string]: string | boolean;
+    [key: string]: string | boolean | object[] | any;
   };
 }
 
 interface Props {
   activeStep: number;
   setActiveStep: (step: number) => void;
+}
+
+interface ScrapingSelector {
+  key: string;
+  selector: string;
 }
 
 function ScrapeForm({ activeStep, setActiveStep }: Props) {
@@ -40,6 +47,9 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
       published: true,
       public: true,
       key: "",
+    },
+    2: {
+      scrapingSelectors: [],
     },
   });
 
@@ -77,6 +87,31 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
       [step]: {
         ...prevValues[step],
         [name]: checked,
+      },
+    }));
+  };
+
+  const addNewScrapeSelector = () => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      2: {
+        ...prevValues[2],
+        scrapingSelectors: [
+          ...prevValues[2].scrapingSelectors,
+          { key: "", selector: "" },
+        ],
+      },
+    }));
+  };
+
+  const removeScrapeSelector = (index: number) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      2: {
+        ...prevValues[2],
+        scrapingSelectors: prevValues[2].scrapingSelectors.filter(
+          (_: any, i: number) => i !== index
+        ),
       },
     }));
   };
@@ -124,16 +159,45 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
     setActiveStep(step);
   };
 
+  const handleSelectorChange = (
+    index: number,
+    field: keyof ScrapingSelector,
+    value: string
+  ) => {
+    const updatedScrapingSelectors = formValues[2].scrapingSelectors.map(
+      (selector: any, i: number) => {
+        if (i === index) {
+          return { ...selector, [field]: value };
+        }
+        return selector;
+      }
+    );
+
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      2: {
+        ...prevValues[2],
+        scrapingSelectors: updatedScrapingSelectors,
+      },
+    }));
+  };
+
   const fetchPage = async () => {
     const res = await fetch(`/api/scrape?url=https://${formValues[0].website}`);
-
     const data = await res.json();
+  };
+
+  const areAllSelectorsFilled = () => {
+    return formValues[2].scrapingSelectors.every(
+      (selector: ScrapingSelector) =>
+        selector.key.trim() !== "" && selector.selector.trim() !== ""
+    );
   };
 
   return (
     <form className="flex flex-col gap-2 my-8">
-      <ScrapeSideTabs />
-      {activeStep === 0 && (
+      <ScrapeSideTabs activeStep={activeStep} />
+      {activeStep === 5 && (
         <>
           <Input
             type="text"
@@ -176,7 +240,7 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
           )}
         </>
       )}
-      {activeStep === 1 && (
+      {activeStep === 5 && (
         <>
           <Checkbox
             name="published"
@@ -225,10 +289,13 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
                       </ModalHeader>
                       <ModalBody>
                         <p>Your unique api key code has been generated.</p>
-                        <Snippet>{formValues[1].key}</Snippet>
+                        <Snippet>
+                          {typeof formValues[1].key === "string" &&
+                            formValues[1].key}
+                        </Snippet>
                         <p>
-                          I has been automatically copied to your cliboard. Save
-                          it for later!
+                          It has been automatically copied to your clipboard.
+                          Save it for later!
                         </p>
                       </ModalBody>
                       <ModalFooter>
@@ -246,6 +313,58 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
               </Modal>
             </>
           )}
+        </>
+      )}
+      {activeStep === 0 && (
+        <>
+          {formValues[2].scrapingSelectors.map(
+            (scrapeSelector: ScrapingSelector, index: number) => (
+              <Card key={index}>
+                <CardBody className="flex flex-col gap-3">
+                  <Input
+                    type="string"
+                    label="Key"
+                    placeholder="auction_price"
+                    value={scrapeSelector.key}
+                    onChange={(
+                      e: React.ChangeEvent<
+                        HTMLInputElement | HTMLTextAreaElement
+                      >
+                    ) => handleSelectorChange(index, "key", e.target.value)}
+                  />
+                  <Input
+                    type="string"
+                    label="Selector"
+                    placeholder="div > p > a > string"
+                    value={scrapeSelector.selector}
+                    onChange={(
+                      e: React.ChangeEvent<
+                        HTMLInputElement | HTMLTextAreaElement
+                      >
+                    ) =>
+                      handleSelectorChange(index, "selector", e.target.value)
+                    }
+                  />
+                  <Button
+                    type="button"
+                    className="w-fit"
+                    color="danger"
+                    onClick={() => removeScrapeSelector(index)}
+                  >
+                    Remove
+                  </Button>
+                </CardBody>
+              </Card>
+            )
+          )}
+          <Button
+            type="button"
+            color="primary"
+            onClick={() => addNewScrapeSelector()}
+            disabled={!areAllSelectorsFilled()}
+          >
+            Add scraping selector
+          </Button>
         </>
       )}
       <div className="flex gap-4 mt-4">
