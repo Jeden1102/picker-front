@@ -367,7 +367,7 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
                     }
                   />
                   {scrapeSelector.fields.map((field) => (
-                    <Checkbox>{field}</Checkbox>
+                    <Checkbox key={field}>{field}</Checkbox>
                   ))}
                   <Button
                     type="button"

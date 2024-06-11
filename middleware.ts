@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
 
   const currentPath = request.nextUrl.pathname;
 
-  const authPaths = ["/user"];
+  const authPaths = ["/user", "/user/"];
 
   const anonymousPaths = ["/login", "/register", "forgot-password"];
 
