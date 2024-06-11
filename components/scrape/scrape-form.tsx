@@ -28,8 +28,9 @@ interface Props {
   setActiveStep: (step: number) => void;
 }
 
-interface ScrapingSelector {
+interface ScrapeObject {
   key: string;
+  fields: string[];
   selector: string;
 }
 
@@ -91,14 +92,14 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
     }));
   };
 
-  const addNewScrapeSelector = () => {
+  const addNewScrapeSelector = ({ key, fields, selector }: ScrapeObject) => {
     setFormValues((prevValues) => ({
       ...prevValues,
       2: {
         ...prevValues[2],
         scrapingSelectors: [
           ...prevValues[2].scrapingSelectors,
-          { key: "", selector: "" },
+          { key: key ?? "", selector: selector ?? "", fields: fields ?? [] },
         ],
       },
     }));
@@ -161,7 +162,7 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
 
   const handleSelectorChange = (
     index: number,
-    field: keyof ScrapingSelector,
+    field: keyof ScrapeObject,
     value: string
   ) => {
     const updatedScrapingSelectors = formValues[2].scrapingSelectors.map(
@@ -189,26 +190,29 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
 
   const areAllSelectorsFilled = () => {
     return formValues[2].scrapingSelectors.every(
-      (selector: ScrapingSelector) =>
+      (selector: ScrapeObject) =>
         selector.key.trim() !== "" && selector.selector.trim() !== ""
     );
   };
 
   useEffect(() => {
-    function checkScrapeObject() {
-      console.log("teraz1");
-      if (!localStorage.getItem("scrape-object")) return;
+    async function checkScrapeObject() {
+      try {
+        const clipboardText = await navigator.clipboard.readText();
+        if (!clipboardText) return;
 
-      const scrapeObject = JSON.parse(
-        localStorage.getItem("scrape-object") ?? ""
-      );
+        const scrapeObject = JSON.parse(clipboardText);
+
+        if (scrapeObject.source !== "picker") return;
+        await navigator.clipboard.writeText("");
+
+        addNewScrapeSelector(scrapeObject);
+      } catch {}
     }
 
-    window.addEventListener("storage", checkScrapeObject);
-
-    return () => {
-      window.removeEventListener("storage", checkScrapeObject);
-    };
+    setInterval(async () => {
+      await checkScrapeObject();
+    }, 2000);
   }, []);
 
   return (
@@ -335,7 +339,7 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
       {activeStep === 0 && (
         <>
           {formValues[2].scrapingSelectors.map(
-            (scrapeSelector: ScrapingSelector, index: number) => (
+            (scrapeSelector: ScrapeObject, index: number) => (
               <Card key={index}>
                 <CardBody className="flex flex-col gap-3">
                   <Input
@@ -362,6 +366,9 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
                       handleSelectorChange(index, "selector", e.target.value)
                     }
                   />
+                  {scrapeSelector.fields.map((field) => (
+                    <Checkbox>{field}</Checkbox>
+                  ))}
                   <Button
                     type="button"
                     className="w-fit"
@@ -377,7 +384,9 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
           <Button
             type="button"
             color="primary"
-            onClick={() => addNewScrapeSelector()}
+            onClick={() =>
+              addNewScrapeSelector({ key: "", fields: [], selector: "" })
+            }
             disabled={!areAllSelectorsFilled()}
           >
             Add scraping selector
