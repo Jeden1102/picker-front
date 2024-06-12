@@ -16,6 +16,7 @@ import {
 } from "@nextui-org/modal";
 import { Snippet } from "@nextui-org/snippet";
 import ScrapeSideTabs from "./scrape-side-tabs";
+import { getPageDocument } from "@/utils/Scraper";
 
 interface FormValues {
   [key: number]: {
@@ -40,6 +41,9 @@ interface ScrapeObject {
 
 function ScrapeForm({ activeStep, setActiveStep }: Props) {
   const [validationErrors, setValidationErrors] = useState({} as any);
+  const [scrapedPageDocument, setScrapedPageDocument] = useState(
+    null as null | Document
+  );
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const [formValues, setFormValues] = useState<FormValues>({
@@ -97,9 +101,6 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
   };
 
   const addNewScrapeSelector = ({ key, fields, selector }: ScrapeObject) => {
-    console.log(key);
-    console.log(fields);
-    console.log(selector);
     setFormValues((prevValues) => ({
       ...prevValues,
       2: {
@@ -136,7 +137,7 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
     }));
   };
 
-  const validateStep = (step: number) => {
+  const validateStep = async (step: number) => {
     const schemas: Record<number, object> = {
       0: {
         name: formValues[0].name,
@@ -161,7 +162,8 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
     }
 
     if (step === 1) {
-      fetchPage();
+      const page = await getPageDocument(`https://${formValues[0].website}`);
+      setScrapedPageDocument(page);
     }
 
     setActiveStep(step);
@@ -217,17 +219,29 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
     });
   };
 
-  const fetchPage = async () => {
-    const res = await fetch(`/api/scrape?url=https://${formValues[0].website}`);
-    const data = await res.json();
-  };
-
   const areAllSelectorsFilled = () => {
     return formValues[2].scrapingSelectors.every(
       (selector: ScrapeObject) =>
         selector.key.trim() !== "" && selector.selector.trim() !== ""
     );
   };
+
+  const updateAvailableScrapeFields = () => {
+    console.log(formValues);
+    formValues[2].scrapingSelectors.forEach((sel: any) => {
+      if (sel.selector) {
+        try {
+          console.log(scrapedPageDocument?.querySelector(sel.selector));
+        } catch {}
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (activeStep === 2 && scrapedPageDocument !== null) {
+      updateAvailableScrapeFields();
+    }
+  }, [formValues, activeStep]);
 
   useEffect(() => {
     async function checkScrapeObject() {
@@ -260,10 +274,10 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
   return (
     <form className="flex flex-col gap-2 my-8">
       <ScrapeSideTabs activeStep={activeStep} />
-      {activeStep === 5 && (
+      {activeStep === 0 && (
         <>
           <Input
-            type="text"
+            type="string"
             label="Scrape title"
             placeholder="Amazing facebook scraper"
             name="name"
@@ -286,7 +300,7 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
             <span className={error()}>{validationErrors.description}</span>
           )}
           <Input
-            type="text"
+            type="string"
             label="Website"
             placeholder="nextui.org"
             name="website"
@@ -303,7 +317,7 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
           )}
         </>
       )}
-      {activeStep === 5 && (
+      {activeStep === 1 && (
         <>
           <Checkbox
             name="published"
@@ -378,7 +392,7 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
           )}
         </>
       )}
-      {activeStep === 0 && (
+      {activeStep === 2 && (
         <>
           {formValues[2].scrapingSelectors.map(
             (scrapeSelector: ScrapeObject, index: number) => (
@@ -395,19 +409,33 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
                       >
                     ) => handleSelectorChange(index, "key", e.target.value)}
                   />
-                  <Input
-                    type="string"
-                    label="Selector"
-                    placeholder="div > p > a > string"
-                    value={scrapeSelector.selector}
-                    onChange={(
-                      e: React.ChangeEvent<
-                        HTMLInputElement | HTMLTextAreaElement
-                      >
-                    ) =>
-                      handleSelectorChange(index, "selector", e.target.value)
-                    }
-                  />
+                  <div>
+                    <Input
+                      type="string"
+                      label="Selector"
+                      placeholder="div > p > a > string"
+                      value={scrapeSelector.selector}
+                      onChange={(
+                        e: React.ChangeEvent<
+                          HTMLInputElement | HTMLTextAreaElement
+                        >
+                      ) =>
+                        handleSelectorChange(index, "selector", e.target.value)
+                      }
+                    />
+                    <p className="text-sm opacity-75 mt-1">
+                      Warning! By changing selector, content to scrape below may
+                      change!
+                    </p>
+                  </div>
+
+                  <div>
+                    <p>Selected content</p>
+                    <p className="text-sm opacity-75">
+                      Choose the content you want to scrape
+                    </p>
+                  </div>
+
                   {Object.keys(scrapeSelector.fields).map((key) => (
                     <Checkbox
                       name={key}
@@ -433,6 +461,7 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
           <Button
             type="button"
             color="primary"
+            variant="light"
             onClick={() =>
               addNewScrapeSelector({
                 key: "",
