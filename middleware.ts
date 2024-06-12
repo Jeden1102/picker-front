@@ -6,10 +6,9 @@ export function middleware(request: NextRequest) {
 
   const currentPath = request.nextUrl.pathname;
 
-  const authPaths = ["/user", "/user/"];
+  const authPaths = ["/user", "/user/new-scrape"];
 
   const anonymousPaths = ["/login", "/register", "forgot-password"];
-
   if (authPaths.includes(currentPath) && cookie === undefined) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
