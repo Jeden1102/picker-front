@@ -16,30 +16,16 @@ export default function FaqPage() {
       </p>
       <div className="mt-4">
         <Accordion variant="splitted">
-          <AccordionItem
-            className="text-left"
-            key="1"
-            aria-label="Accordion 1"
-            title="Accordion 1"
-          >
-            {defaultContent}
-          </AccordionItem>
-          <AccordionItem
-            className="text-left"
-            key="2"
-            aria-label="Accordion 2"
-            title="Accordion 2"
-          >
-            {defaultContent}
-          </AccordionItem>
-          <AccordionItem
-            className="text-left"
-            key="3"
-            aria-label="Accordion 3"
-            title="Accordion 3"
-          >
-            {defaultContent}
-          </AccordionItem>
+          {new Array(5).fill("").map((item, i) => (
+            <AccordionItem
+              className="text-left"
+              key={i}
+              aria-label={`Accordion ${i + 1}`}
+              title={`Accordion ${i + 1}`}
+            >
+              {defaultContent}
+            </AccordionItem>
+          ))}
         </Accordion>
       </div>
     </div>
