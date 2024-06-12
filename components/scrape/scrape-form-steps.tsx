@@ -13,7 +13,7 @@ function ScrapeFormSteps({ activeStep }: Props) {
     <Card
       className={clsx(
         gradientBg({ color: "blue" }),
-        "text-white p-4 md:flex-1 md:max-w-72"
+        "text-white p-4 md:flex-1 md:max-w-72 h-fit"
       )}
     >
       <CardBody>

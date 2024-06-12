@@ -28,9 +28,13 @@ interface Props {
   setActiveStep: (step: number) => void;
 }
 
+interface Field {
+  [key: string]: any;
+}
+
 interface ScrapeObject {
   key: string;
-  fields: string[];
+  fields: Field;
   selector: string;
 }
 
@@ -93,13 +97,16 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
   };
 
   const addNewScrapeSelector = ({ key, fields, selector }: ScrapeObject) => {
+    console.log(key);
+    console.log(fields);
+    console.log(selector);
     setFormValues((prevValues) => ({
       ...prevValues,
       2: {
         ...prevValues[2],
         scrapingSelectors: [
           ...prevValues[2].scrapingSelectors,
-          { key: key ?? "", selector: selector ?? "", fields: fields ?? [] },
+          { key: key ?? "", selector: selector ?? "", fields: fields ?? {} },
         ],
       },
     }));
@@ -183,6 +190,33 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
     }));
   };
 
+  const handleSelectorFieldChange = (index: number, key: string) => {
+    setFormValues((prevFormValues) => {
+      const updatedScrapingSelectors = prevFormValues[2].scrapingSelectors.map(
+        (selector: any, i: number) => {
+          if (i === index) {
+            return {
+              ...selector,
+              fields: {
+                ...selector.fields,
+                [key]: !selector.fields[key],
+              },
+            };
+          }
+          return selector;
+        }
+      );
+
+      return {
+        ...prevFormValues,
+        2: {
+          ...prevFormValues[2],
+          scrapingSelectors: updatedScrapingSelectors,
+        },
+      };
+    });
+  };
+
   const fetchPage = async () => {
     const res = await fetch(`/api/scrape?url=https://${formValues[0].website}`);
     const data = await res.json();
@@ -201,11 +235,19 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
         const clipboardText = await navigator.clipboard.readText();
         if (!clipboardText) return;
 
-        const scrapeObject = JSON.parse(clipboardText);
-
+        let scrapeObject = JSON.parse(clipboardText);
         if (scrapeObject.source !== "picker") return;
-        await navigator.clipboard.writeText("");
 
+        const fields = scrapeObject.content.reduce((acc: any, key: any) => {
+          acc[key] = true;
+          return acc;
+        }, {} as Record<string, boolean>);
+
+        scrapeObject = {
+          ...scrapeObject,
+          fields,
+        };
+        await navigator.clipboard.writeText("");
         addNewScrapeSelector(scrapeObject);
       } catch {}
     }
@@ -366,8 +408,15 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
                       handleSelectorChange(index, "selector", e.target.value)
                     }
                   />
-                  {scrapeSelector.fields.map((field) => (
-                    <Checkbox key={field}>{field}</Checkbox>
+                  {Object.keys(scrapeSelector.fields).map((key) => (
+                    <Checkbox
+                      name={key}
+                      isSelected={scrapeSelector.fields[key]}
+                      key={key}
+                      onChange={() => handleSelectorFieldChange(index, key)}
+                    >
+                      {key}
+                    </Checkbox>
                   ))}
                   <Button
                     type="button"
@@ -385,7 +434,11 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
             type="button"
             color="primary"
             onClick={() =>
-              addNewScrapeSelector({ key: "", fields: [], selector: "" })
+              addNewScrapeSelector({
+                key: "",
+                fields: { full: false, content: false },
+                selector: "",
+              })
             }
             disabled={!areAllSelectorsFilled()}
           >
