@@ -1,0 +1,8 @@
+.terms h2 {
+  @apply text-lg font-semibold;
+}
+
+.terms p,
+ul {
+  @apply mt-2 mb-4 opacity-80;
+}
