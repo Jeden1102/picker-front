@@ -1,3 +1,5 @@
+import "@/styles/terms.css";
+
 export default function AboutLayout({
   children,
 }: {

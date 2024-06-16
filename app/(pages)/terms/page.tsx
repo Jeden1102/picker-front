@@ -1,7 +1,9 @@
 import { title } from "@/components/primitives";
 
 async function getData() {
-  const res = await fetch("http://localhost:1337/api/terms");
+  const STRAPI_URL = process.env.STRAPI_URL;
+
+  const res = await fetch(`${STRAPI_URL}/api/terms`);
 
   if (!res.ok) {
     throw new Error("Failed to fetch data");
@@ -15,10 +17,12 @@ export default async function TermsPage() {
   return (
     <div>
       <h1 className={title({ size: "md" })}>Terms</h1>
-      <div
-        className="mt-4 terms"
-        dangerouslySetInnerHTML={{ __html: data.data[0].attributes.content }}
-      ></div>
+      {data && (
+        <div
+          className="mt-4 terms"
+          dangerouslySetInnerHTML={{ __html: data.data[0].attributes.content }}
+        ></div>
+      )}
     </div>
   );
 }
