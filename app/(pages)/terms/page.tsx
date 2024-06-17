@@ -5,10 +5,6 @@ async function getData() {
 
   const res = await fetch(`${STRAPI_URL}/api/terms`);
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
   return res.json();
 }
 
@@ -17,7 +13,7 @@ export default async function TermsPage() {
   return (
     <div>
       <h1 className={title({ size: "md" })}>Terms</h1>
-      {data && (
+      {data.data && (
         <div
           className="mt-4 terms"
           dangerouslySetInnerHTML={{ __html: data.data[0].attributes.content }}

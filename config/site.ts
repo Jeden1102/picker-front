@@ -54,10 +54,6 @@ export const siteConfig = {
       label: "Pricing",
       href: "/pricing",
     },
-    {
-      label: "Community",
-      href: "/community",
-    },
   ],
   companyItems: [
     {
