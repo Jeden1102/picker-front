@@ -44,7 +44,7 @@ export const siteConfig = {
   resourceItems: [
     {
       label: "Blog",
-      href: "/blog",
+      href: "/#blog",
     },
     {
       label: "FAQ",
