@@ -1,6 +1,7 @@
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import Image from "next/image";
 import Link from "next/link";
+import { Article } from "@/types";
 
 async function getData() {
   const STRAPI_URL = process.env.STRAPI_URL;
@@ -13,67 +14,6 @@ async function getData() {
 }
 
 async function Blogs() {
-  interface ImageFormat {
-    ext: string;
-    url: string;
-    hash: string;
-    mime: string;
-    name: string;
-    path: string | null;
-    size: number;
-    width: number;
-    height: number;
-    sizeInBytes: number;
-  }
-
-  interface ImageAttributes {
-    name: string;
-    alternativeText: string | null;
-    caption: string | null;
-    width: number;
-    height: number;
-    formats: {
-      small: ImageFormat;
-      medium: ImageFormat;
-      thumbnail: ImageFormat;
-    };
-    hash: string;
-    ext: string;
-    mime: string;
-    size: number;
-    url: string;
-    previewUrl: string | null;
-    provider: string;
-    provider_metadata: any | null;
-    createdAt: string;
-    updatedAt: string;
-  }
-
-  interface ImageData {
-    id: number;
-    attributes: ImageAttributes;
-  }
-
-  interface Image {
-    data: ImageData;
-  }
-
-  interface Attributes {
-    subtitle: string;
-    title: string;
-    content: string;
-    createdAt: string;
-    updatedAt: string;
-    publishedAt: string;
-    category: string;
-    image: Image;
-  }
-
-  interface Article {
-    id: number;
-    attributes: Attributes;
-  }
-
   const STRAPI_URL = process.env.STRAPI_URL;
   const data = await getData();
 
