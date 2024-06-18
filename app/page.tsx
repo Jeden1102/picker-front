@@ -38,6 +38,7 @@ export default function Home() {
         <LearnMore />
       </section>
       <section>
+        {/* @ts-expect-error Server Component */}
         <Blogs />
       </section>
     </>

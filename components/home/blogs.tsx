@@ -18,36 +18,41 @@ async function Blogs() {
   const data = await getData();
 
   return (
-    data.data && (
-      <div className="flex flex-col gap-4 md:flex-row mb-10 lg:mb-14" id="blog">
-        {data.data.map((blog: Article) => (
-          <Link key={blog.id} href={`/blog/${blog.id}`}>
-            <Card className="py-4 w-full">
-              <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-                <p className="text-tiny uppercase font-bold">
-                  {blog.attributes.subtitle}
-                </p>
-                <small className="text-default-500">
-                  {blog.attributes.category}
-                </small>
-                <h4 className="font-bold text-large">
-                  {blog.attributes.title}
-                </h4>
-              </CardHeader>
-              <CardBody className="overflow-visible py-2">
-                <Image
-                  alt="Card background"
-                  className="object-cover rounded-xl"
-                  src={`${STRAPI_URL}${blog.attributes.image.data.attributes.url}`}
-                  width={400}
-                  height={270}
-                />
-              </CardBody>
-            </Card>
-          </Link>
-        ))}
-      </div>
-    )
+    <div>
+      {data.data && (
+        <div
+          className="flex flex-col gap-4 md:flex-row mb-10 lg:mb-14"
+          id="blog"
+        >
+          {data.data.map((blog: Article) => (
+            <Link key={blog.id} href={`/blog/${blog.id}`}>
+              <Card className="py-4 w-full">
+                <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+                  <p className="text-tiny uppercase font-bold">
+                    {blog.attributes.subtitle}
+                  </p>
+                  <small className="text-default-500">
+                    {blog.attributes.category}
+                  </small>
+                  <h4 className="font-bold text-large">
+                    {blog.attributes.title}
+                  </h4>
+                </CardHeader>
+                <CardBody className="overflow-visible py-2">
+                  <Image
+                    alt="Card background"
+                    className="object-cover rounded-xl"
+                    src={`${STRAPI_URL}${blog.attributes.image.data.attributes.url}`}
+                    width={400}
+                    height={270}
+                  />
+                </CardBody>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 

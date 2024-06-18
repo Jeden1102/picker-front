@@ -13,7 +13,9 @@ function ScrapeSideTabResults() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <>
-      <Button onPress={onOpen}><FaSitemap/></Button>
+      <Button onPress={onOpen}>
+        <FaSitemap />
+      </Button>
       <Modal
         className="absolute right-0 top-0 h-full m-0 sm:m-0 md:rounded-r-none"
         backdrop="opaque"
@@ -49,9 +51,6 @@ function ScrapeSideTabResults() {
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
                 </Button>
               </ModalFooter>
             </>
