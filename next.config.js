@@ -8,6 +8,12 @@ const nextConfig = {
         port: "1337",
         pathname: "/uploads/**",
       },
+      {
+        protocol: "https",
+        hostname: "dev.dominikraducki.pl",
+        port: "1333",
+        pathname: "/uploads/**",
+      },
     ],
   },
 };
