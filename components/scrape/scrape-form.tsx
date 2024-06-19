@@ -17,6 +17,7 @@ import {
 import { Snippet } from "@nextui-org/snippet";
 import ScrapeSideTabs from "./scrape-side-tabs";
 import { getPageDocument } from "@/utils/Scraper";
+import { RadioGroup, Radio } from "@nextui-org/radio";
 
 interface FormValues {
   [key: number]: {
@@ -58,6 +59,8 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
       key: "",
     },
     2: {
+      scrapingRangeMode: "all",
+      scrapingRange: "",
       scrapingSelectors: [],
     },
   });
@@ -96,6 +99,16 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
       [step]: {
         ...prevValues[step],
         [name]: checked,
+      },
+    }));
+  };
+
+  const handleRadioChange = (value: string) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      2: {
+        ...prevValues[2],
+        scrapingRangeMode: value,
       },
     }));
   };
@@ -265,7 +278,7 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
     } catch {}
   }
   return (
-    <form className="flex flex-col gap-2 my-8">
+    <form className="flex flex-col gap-2 my-2">
       <ScrapeSideTabs activeStep={activeStep} />
       {activeStep === 0 && (
         <>
@@ -387,6 +400,31 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
       )}
       {activeStep === 2 && (
         <>
+          {formValues[2].scrapingSelectors.length > 0 && (
+            <>
+              <RadioGroup
+                label="Scraping limit"
+                value={formValues[2].scrapingRangeMode}
+                onValueChange={handleRadioChange}
+              >
+                <Radio value="all">All items</Radio>
+                <Radio value="first_only">First item only</Radio>
+                <Radio value="last_only">Last item only</Radio>
+                <Radio value="range">Range</Radio>
+              </RadioGroup>
+            </>
+          )}
+          {formValues[2].scrapingRangeMode === "range" && (
+            <Input
+              type="string"
+              label="Scraping Range"
+              className="my-2"
+              placeholder="e.g., 1-10"
+              name="scrapingRange"
+              value={formValues[2].scrapingRange}
+              onChange={(e) => handleInputChange(e, 2)}
+            />
+          )}
           {formValues[2].scrapingSelectors.map(
             (scrapeSelector: ScrapeObject, index: number) => (
               <Card key={index}>
