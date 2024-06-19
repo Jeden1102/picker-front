@@ -90,6 +90,31 @@ function ScrapeSideTabHelp({ activeStep }: Props) {
                     </p>
                   </>
                 )}
+                {activeStep === 2 && (
+                  <>
+                    <p>
+                      To create new scrape selector, just click the button 'Add
+                      scraping selector'
+                    </p>
+                    <p>
+                      If you are using the picker extension to scrape content,
+                      after succesfully save you can paste the object by
+                      clicking the 'Paste from page picker' button
+                    </p>
+                    <p>To create the scrape, just fill all the fields:</p>
+                    <p>
+                      <b>Key</b> - key of scrape item, each key have to be
+                      unique!
+                    </p>
+                    <p>
+                      <b>Selector</b> - html selector of each item
+                    </p>
+                    <p>
+                      <b>Selected content</b> - the content of item to be
+                      scraped
+                    </p>
+                  </>
+                )}
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>

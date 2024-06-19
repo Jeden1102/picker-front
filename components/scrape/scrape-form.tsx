@@ -243,34 +243,27 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
     }
   }, [formValues, activeStep]);
 
-  useEffect(() => {
-    async function checkScrapeObject() {
-      try {
-        const clipboardText = await navigator.clipboard.readText();
-        if (!clipboardText) return;
+  async function checkScrapeObject() {
+    try {
+      const clipboardText = await navigator.clipboard.readText();
+      if (!clipboardText) return;
 
-        let scrapeObject = JSON.parse(clipboardText);
-        if (scrapeObject.source !== "picker") return;
+      let scrapeObject = JSON.parse(clipboardText);
+      if (scrapeObject.source !== "picker") return;
 
-        const fields = scrapeObject.content.reduce((acc: any, key: any) => {
-          acc[key] = true;
-          return acc;
-        }, {} as Record<string, boolean>);
+      const fields = scrapeObject.content.reduce((acc: any, key: any) => {
+        acc[key] = true;
+        return acc;
+      }, {} as Record<string, boolean>);
 
-        scrapeObject = {
-          ...scrapeObject,
-          fields,
-        };
-        await navigator.clipboard.writeText("");
-        addNewScrapeSelector(scrapeObject);
-      } catch {}
-    }
-
-    setInterval(async () => {
-      await checkScrapeObject();
-    }, 2000);
-  }, []);
-
+      scrapeObject = {
+        ...scrapeObject,
+        fields,
+      };
+      await navigator.clipboard.writeText("");
+      addNewScrapeSelector(scrapeObject);
+    } catch {}
+  }
   return (
     <form className="flex flex-col gap-2 my-8">
       <ScrapeSideTabs activeStep={activeStep} />
@@ -458,21 +451,30 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
               </Card>
             )
           )}
-          <Button
-            type="button"
-            color="primary"
-            variant="light"
-            onClick={() =>
-              addNewScrapeSelector({
-                key: "",
-                fields: { full: false, content: false },
-                selector: "",
-              })
-            }
-            disabled={!areAllSelectorsFilled()}
-          >
-            Add scraping selector
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              color="primary"
+              onClick={() =>
+                addNewScrapeSelector({
+                  key: "",
+                  fields: { full: false, content: false },
+                  selector: "",
+                })
+              }
+              disabled={!areAllSelectorsFilled()}
+            >
+              Add scraping selector
+            </Button>
+            <Button
+              type="button"
+              color="danger"
+              onClick={() => checkScrapeObject()}
+              disabled={!areAllSelectorsFilled()}
+            >
+              Paste from page picker
+            </Button>
+          </div>
         </>
       )}
       <div className="flex gap-4 mt-4">
