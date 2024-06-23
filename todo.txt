@@ -2,4 +2,6 @@
 2.2 Create scrape -> multipart form:
 - scraping add panel
 - summary
+- scraping cron jobs
 2.3 My scrapes -> list of scraping
+2.4 Scrapes explore -> list of users scraper
