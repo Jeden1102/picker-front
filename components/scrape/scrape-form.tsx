@@ -38,6 +38,7 @@ interface ScrapeObject {
   key: string;
   fields: Field;
   selector: string;
+  is_wrapper: boolean;
 }
 
 function ScrapeForm({ activeStep, setActiveStep }: Props) {
@@ -75,6 +76,22 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
     key: !formValues[1].public ? z.string().min(1) : z.string().min(0),
   });
 
+  const handleWrapperChange = (index: number, value: boolean) => {
+    setFormValues((prevFormValues) => {
+      const newScrapingSelectors = [...prevFormValues[2].scrapingSelectors];
+      newScrapingSelectors[index] = {
+        ...newScrapingSelectors[index],
+        is_wrapper: value,
+      };
+      return {
+        ...prevFormValues,
+        2: {
+          ...prevFormValues[2],
+          scrapingSelectors: newScrapingSelectors,
+        },
+      };
+    });
+  };
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     step: number
@@ -120,7 +137,12 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
         ...prevValues[2],
         scrapingSelectors: [
           ...prevValues[2].scrapingSelectors,
-          { key: key ?? "", selector: selector ?? "", fields: fields ?? {} },
+          {
+            key: key ?? "",
+            selector: selector ?? "",
+            fields: fields ?? {},
+            is_wrapper: false,
+          },
         ],
       },
     }));
@@ -239,6 +261,13 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
     );
   };
 
+  const isWrapperDisabled = (index: number) => {
+    return formValues[2].scrapingSelectors.some(
+      (scrapeSelector: ScrapeObject, i: number) =>
+        scrapeSelector.is_wrapper && i !== index
+    );
+  };
+
   const updateAvailableScrapeFields = () => {
     console.log(formValues);
     formValues[2].scrapingSelectors.forEach((sel: any) => {
@@ -280,7 +309,7 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
   return (
     <form className="flex flex-col gap-2 my-2">
       <ScrapeSideTabs activeStep={activeStep} />
-      {activeStep === 0 && (
+      {activeStep === 3 && (
         <>
           <Input
             type="string"
@@ -323,7 +352,7 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
           )}
         </>
       )}
-      {activeStep === 1 && (
+      {activeStep === 3 && (
         <>
           <Checkbox
             name="published"
@@ -398,7 +427,7 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
           )}
         </>
       )}
-      {activeStep === 2 && (
+      {activeStep === 0 && (
         <>
           {formValues[2].scrapingSelectors.length > 0 && (
             <>
@@ -429,6 +458,16 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
             (scrapeSelector: ScrapeObject, index: number) => (
               <Card key={index}>
                 <CardBody className="flex flex-col gap-3">
+                  <Checkbox
+                    name="is_wrapper"
+                    isSelected={scrapeSelector.is_wrapper}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleWrapperChange(index, e.target.checked)
+                    }
+                    isDisabled={isWrapperDisabled(index)}
+                  >
+                    Is wrapper
+                  </Checkbox>
                   <Input
                     type="string"
                     label="Key"
@@ -459,14 +498,12 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
                       change!
                     </p>
                   </div>
-
                   <div>
                     <p>Selected content</p>
                     <p className="text-sm opacity-75">
                       Choose the content you want to scrape
                     </p>
                   </div>
-
                   {Object.keys(scrapeSelector.fields).map((key) => (
                     <Checkbox
                       name={key}
