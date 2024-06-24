@@ -273,7 +273,11 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
     formValues[2].scrapingSelectors.forEach((sel: any) => {
       if (sel.selector) {
         try {
-          console.log(scrapedPageDocument?.querySelector(sel.selector));
+          const el = scrapedPageDocument?.querySelector(sel.selector);
+          console.log(el);
+          const scrapeAttributes = "test";
+          console.log("tutaj");
+          console.log(scrapeAttributes, el);
         } catch {}
       }
     });
@@ -309,7 +313,7 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
   return (
     <form className="flex flex-col gap-2 my-2">
       <ScrapeSideTabs activeStep={activeStep} />
-      {activeStep === 3 && (
+      {activeStep === 0 && (
         <>
           <Input
             type="string"
@@ -352,7 +356,7 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
           )}
         </>
       )}
-      {activeStep === 3 && (
+      {activeStep === 1 && (
         <>
           <Checkbox
             name="published"
@@ -427,7 +431,7 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
           )}
         </>
       )}
-      {activeStep === 0 && (
+      {activeStep === 2 && (
         <>
           {formValues[2].scrapingSelectors.length > 0 && (
             <>
@@ -535,6 +539,7 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
                   key: "",
                   fields: { full: false, content: false },
                   selector: "",
+                  is_wrapper: false,
                 })
               }
               disabled={!areAllSelectorsFilled()}
