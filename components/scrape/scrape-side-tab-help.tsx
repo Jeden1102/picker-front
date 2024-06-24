@@ -46,7 +46,7 @@ function ScrapeSideTabHelp({ activeStep }: Props) {
                     <p>
                       <b className="pr-1">Scrape title</b>
                       will be a field corresponding to the name of scraping
-                      you've applied. Make it stand out!
+                      you&#39;ve applied. Make it stand out!
                     </p>
                     <p>
                       <b className="pr-1">Scrape description</b>
@@ -58,7 +58,7 @@ function ScrapeSideTabHelp({ activeStep }: Props) {
                       <b className="pr-1">Website</b>
                       will be a field corresponding to the website of scrape
                       target. Pass only the part without the protocol (https) -
-                      we've got it for you!
+                      we&#39;ve got it for you!
                     </p>
                     <p>
                       If you are ready with the fields. Proceed to the next step
@@ -93,13 +93,13 @@ function ScrapeSideTabHelp({ activeStep }: Props) {
                 {activeStep === 2 && (
                   <>
                     <p>
-                      To create new scrape selector, just click the button 'Add
-                      scraping selector'
+                      To create new scrape selector, just click the button &#39;Add
+                      scraping selector&#39;
                     </p>
                     <p>
                       If you are using the picker extension to scrape content,
                       after succesfully save you can paste the object by
-                      clicking the 'Paste from page picker' button
+                      clicking the &#39;Paste from page picker&#39; button
                     </p>
                     <p>To create the scrape, just fill all the fields:</p>
                     <p>

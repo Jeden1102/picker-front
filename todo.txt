@@ -1,6 +1,7 @@
 2. User profile tabs:
 2.2 Create scrape -> multipart form:
-- add scarping help info on sidepanel
 - scraping add panel
 - summary
+- scraping cron jobs
 2.3 My scrapes -> list of scraping
+2.4 Scrapes explore -> list of users scraper
