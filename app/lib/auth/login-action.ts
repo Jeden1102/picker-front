@@ -43,7 +43,6 @@ export async function loginAction(prevState: any, formData: any) {
       return { ...prevState, message: data.error.message, errors: null };
     if (response.ok && data.jwt) cookies().set("jwt", data.jwt);
   } catch (error) {
-    console.log(error);
     return { error: "Server error please try again later." };
   }
   redirect("/user");

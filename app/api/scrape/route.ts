@@ -38,7 +38,6 @@ export async function GET(req: Request) {
     const $ = cheerio.load(html);
     const bodyContent = $("body").html();
 
-    console.log(bodyContent);
     return NextResponse.json(
       {
         data: bodyContent,
@@ -46,7 +45,6 @@ export async function GET(req: Request) {
       { status: 200 }
     );
   } catch (error) {
-    console.log(error);
     return NextResponse.json(
       {
         message: "Error fetching the page.",

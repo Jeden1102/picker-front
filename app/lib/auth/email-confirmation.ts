@@ -25,7 +25,6 @@ export async function sendEmailConfirmation(email: string) {
 
     return { message: "Email has been send succesfully!" };
   } catch (error) {
-    console.log(error);
     return { error: "Server error please try again later." };
   }
 }

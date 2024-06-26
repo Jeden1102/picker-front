@@ -45,7 +45,6 @@ export async function resetPassword(prevState: any, formData: any) {
     });
 
     const data = await response.json();
-    console.log(data);
 
     return { message: "Password reset succesfully!", success: true };
   } catch (error) {

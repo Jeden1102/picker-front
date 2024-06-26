@@ -269,15 +269,18 @@ function ScrapeForm({ activeStep, setActiveStep }: Props) {
   };
 
   const updateAvailableScrapeFields = () => {
-    console.log(formValues);
-    formValues[2].scrapingSelectors.forEach((sel: any) => {
+    formValues[2].scrapingSelectors.forEach((sel: any, index: number) => {
       if (sel.selector) {
         try {
           const el = scrapedPageDocument?.querySelector(sel.selector);
-          console.log(el);
-          const scrapeAttributes = "test";
-          console.log("tutaj");
-          console.log(scrapeAttributes, el);
+          const scrapeAttributes = [...el.attributes];
+          const oldFormValues = formValues;
+
+          oldFormValues[2].scrapingSelectors[index].fields =
+            scrapeAttributes.map((attr) => {
+              return { [attr.name]: false };
+            });
+          setFormValues(oldFormValues);
         } catch {}
       }
     });
